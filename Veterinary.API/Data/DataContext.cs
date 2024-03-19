@@ -22,7 +22,13 @@ namespace Veterinary.API.Data
 
         public DbSet<Owner> Owners { get; set; }
 
+        public DbSet<PetType> PetTypes { get; set; }
 
+        public DbSet<Pet> Pets { get; set; }
+
+        public DbSet<ServiceType> Services { get; set; }
+
+        public DbSet<History> Histories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 
