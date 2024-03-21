@@ -46,7 +46,16 @@ namespace Veterinary.Shared.Entities
 
         public string LastName { get; set; }
 
+        
+        [Display(Name = "Last Name")]
 
+        [MaxLength(50, ErrorMessage = "The {0} field can not have more than {1} characters.")]
+
+        [Required(ErrorMessage = "The field {0} is mandatory.")]
+
+        [EmailAddress(ErrorMessage ="Digite un Email valido")]
+
+        public string Email { get; set; }
 
         [Display(Name = "Fixed Phone")]
 
@@ -73,8 +82,7 @@ namespace Veterinary.Shared.Entities
         public string FullName => $"{FirstName} {LastName}";
 
 
-
-        public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
+        public ICollection<Agenda> Agendas { get; set; }
 
     }
 

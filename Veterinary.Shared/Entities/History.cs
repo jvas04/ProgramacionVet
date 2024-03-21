@@ -27,8 +27,8 @@ namespace Veterinary.Shared.Entities
 
         public DateTime DateLocal => Date.ToLocalTime();
 
-        public ServiceType ServiceType { get; set; }
+        public ServiceType ServicesTypes { get; set; }
 
-        public Pet Pet {  get; set; }
+        public Pet Pets {  get; set; }
     }
 }
