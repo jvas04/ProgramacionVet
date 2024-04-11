@@ -5,20 +5,43 @@ namespace Veterinary.WEB.Repositories
 {
     public class Repository : IRepository
     {
-        private readonly HttpClient httpClient;
+        private readonly HttpClient _httpClient;
 
-        private JsonSerializerOptions _jsonSerializerOptions => new JsonSerializerOptions
+        private JsonSerializerOptions _jsonDefaultOptions => new JsonSerializerOptions
         {
 
             PropertyNameCaseInsensitive = true
 
         };
 
-
-        public Task<HttpResponseWrapper<T>> GetAsync<T>(string url)
+        public Repository (HttpClient httpClient)
         {
-            throw new NotImplementedException();
+            _httpClient = httpClient;
         }
+        public async Task<HttpResponseWrapper<T>> GetAsync<T>(string url)
+        {
+            var responseHttp = await _httpClient.GetAsync(url);
+
+            if (responseHttp.IsSuccessStatusCode){
+                var response= await UnserializeAnswer<T>(responseHttp, _jsonDefaultOptions);
+
+                return new HttpResponseWrapper<T> (response, false, responseHttp);
+            }
+            else
+            {
+                return new HttpResponseWrapper<T>(default, true, responseHttp);
+            }
+        }
+
+        private async Task<T> UnserializeAnswer<T>
+            (HttpResponseMessage httpResponse, JsonSerializerOptions jsonSerializerOptions)
+        {
+            var respuestaString = await
+                httpResponse.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<T>(respuestaString, 
+                jsonSerializerOptions)!;
+        }
+
 
         public Task<HttpResponseWrapper<object>> Post<T>(string url, T model)
         {
