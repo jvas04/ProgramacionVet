@@ -13,12 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DefaultConnection"));
-
-
-
+builder.Services.AddSwaggerGen(); builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DefaultConnection"));
 
 
 var app = builder.Build();
@@ -35,5 +30,23 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+
+app.UseCors(x => x
+
+.AllowAnyMethod()
+.AllowAnyHeader()
+.AllowCredentials()
+.SetIsOriginAllowed(origin => true)
+
+);
+
+
+
+
+
+
+
+
 
 app.Run();
